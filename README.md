@@ -1,5 +1,12 @@
 # CS-499: Core Management Services Prototype
 
+## Requirements
+
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [Docker Engine](https://docs.docker.com/engine/)
+* [Docker Compose](https://docs.docker.com/compose/)
+* [Git](https://git-scm.com/)
+* (Optional) [Bruno API client](https://www.usebruno.com/) for testing
+
 ## Project Overview
 
 This project, originally developed for CS 320: Software Testing, Automation, and QA, serves as a proof-of-concept for foundational business logic required in a management application. It implements three core, highly-tested services: Contact Management, Task Management, and Appointment Scheduling.
