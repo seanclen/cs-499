@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  # mongodb:
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   environment:
+  #     MONGO_USERNAME: ${MONGO_ROOT_USERNAME}
+  #     MONGO_PASSWORD: ${MONGO_ROOT_PASSWORD}
+  #     MONGO_DATABASE: ${MONGO_DATABASE}
+  #   volumes:
+  #     - mongo-data:/data/db
+
+  capstone:
+    build:
+      context: capstone
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "7070:7070"
+    volumes:
+      - ./capstone:/app/code
+    # depends_on:
+    #   - mongodb
+    environment:
+      DEBUG_PORT: 7070
+      MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DATABASE}
+
+volumes:
+  mongo-data:

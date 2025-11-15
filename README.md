@@ -22,3 +22,16 @@ The CS 499 enhancement roadmap transforms this project into a distributed system
 3. Databases and Persistence
     * Polyglot Persistence via Docker Compose: A robust NoSQL database service (MongoDB) will be integrated into the Docker Compose environment to provide persistence for all application services.
     * Security & Distributed ID Generation: The sequential idCounter will be replaced with secure, collision-resistant UUIDs to ensure unique IDs in the distributed environment and mitigate ID enumeration vulnerabilities.
+
+## Quick Start
+
+To run the enhanced distributed system:
+
+1. Clone the repository and navigate to the project directory
+2. Start all services:
+    ```bash
+    docker compose up
+    ```
+3. Access the application at [http://localhost:8080](http://localhost:8080)
+
+The Docker Compose orchestration will automatically start all required services including the application server and MongoDB database.
