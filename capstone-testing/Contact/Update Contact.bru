@@ -1,0 +1,25 @@
+meta {
+  name: Update Contact
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{host}}/api/contacts/1?firstName=change&lastName=change&phone=1234567890&address=change
+  body: none
+  auth: none
+}
+
+params:query {
+  firstName: change
+  lastName: change
+  phone: 1234567890
+  address: change
+}
+
+body:form-urlencoded {
+  firstName: change
+  lastName: change
+  phone: change
+  address: change
+}

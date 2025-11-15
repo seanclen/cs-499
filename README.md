@@ -47,3 +47,16 @@ This is achieved through:
 * Dockerized build processes that preserve running container state
 
 Simply modify your Java files and the changes will be reflected in the running application within seconds, maintaining database connections and service state.
+
+## API Testing
+
+The project includes a comprehensive API testing suite using Bruno, a modern API testing tool. The test collection is located in the `capstone-testing` directory with the main collection file at `capstone-testing/collection.bru`.
+
+To run the API tests:
+
+1. Install Bruno from [https://www.usebruno.com/](https://www.usebruno.com/)
+2. Open the collection file: `capstone-testing/collection.bru`
+3. Ensure the application is running via `docker compose up`
+4. Execute the test suite to validate all API endpoints
+
+The Bruno collection includes tests for all three core services: Contact Management, Task Management (coming soon), and Appointment Scheduling (coming soon) and validates both successful operations and error handling scenarios.
