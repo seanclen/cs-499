@@ -35,3 +35,15 @@ To run the enhanced distributed system:
 3. Access the application at [http://localhost:8080](http://localhost:8080)
 
 The Docker Compose orchestration will automatically start all required services including the application server and MongoDB database.
+
+## Hot-Reload Development
+
+The development environment includes hot-reloading capabilities to accelerate the development workflow. When changes are made to Java source files, the application is automatically recompiled and redeployed without requiring container restarts.
+
+This is achieved through:
+* Volume mounting of source directories
+* Spring Boot DevTools integration for automatic restart detection
+* Maven/Gradle watch tasks that monitor file changes
+* Dockerized build processes that preserve running container state
+
+Simply modify your Java files and the changes will be reflected in the running application within seconds, maintaining database connections and service state.
