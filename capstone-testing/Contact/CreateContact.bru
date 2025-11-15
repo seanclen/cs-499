@@ -1,0 +1,18 @@
+meta {
+  name: CreateContact
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/contacts?firstName=Johnny&lastName=Appleseed&phone=1234567890&address=San Francisco, CA
+  body: none
+  auth: none
+}
+
+params:query {
+  firstName: Johnny
+  lastName: Appleseed
+  phone: 1234567890
+  address: San Francisco, CA
+}
