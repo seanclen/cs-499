@@ -19,5 +19,10 @@
         <a th:href="@{/}" class="secondary" type="button">Dashboard</a>
     </header>
 
+    <footer th:fragment="site_footer" class="site-footer container-fluid">
+        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2024</span> Sean Clendening</p>
+        <script th:src="@{/js/main.js}"></script>
+    </footer>
+
 </body>
 </html>

@@ -4,16 +4,17 @@
 <body class="contacts">
 
     <div th:replace="~{fragments/layout_fragments :: site_header}"></div>
+
+    <div id="message-container" class="message-container">
+        <p th:if="${message}" th:text="${message}" class="message message-success"></p>
+        <p th:if="${error}" th:text="${error}" class="message message-error"></p>
+    </div>
     
     <main class="container">
         <div class="inline-title">
             <h1>Contacts</h1>
             <a th:href="@{/contacts/new}" type="button">Add New Contact</a>
         </div>
-
-
-        <p th:if="${message}" th:text="${message}" class="message message-success"></p>
-        <p th:if="${error}" th:text="${error}" class="message message-error"></p>
 
         <table>
             <thead>
@@ -47,5 +48,7 @@
         </table>
     </main>
 
-    </body>
+    <div th:replace="~{fragments/layout_fragments :: site_footer}"></div>
+
+</body>
 </html>
