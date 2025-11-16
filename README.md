@@ -1,5 +1,7 @@
 # CS-499: Core Management Services Prototype
 
+![Project Screenshot](screenshot.png)
+
 ## Requirements
 
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [Docker Engine](https://docs.docker.com/engine/)
