@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CapstoneController {
     @GetMapping("/")
-    public String home(Model model) {
-        return "index";
+    public String dashboard(Model model) {
+        return "dashboard";
     }
 }

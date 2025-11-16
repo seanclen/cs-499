@@ -7,19 +7,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="color-scheme" content="light dark">
         <title th:text="${title} + ' | Sean Clendening Capstone'">Sean Clendening Capstone</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pink.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.indigo.min.css">
         <link rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
 
-    <header th:fragment="site_header" class="container-fluid">
-        <!-- <nav>
-            <a href="/">Home</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
-        </nav> -->
-        <div style="border-bottom: 1px solid var(--pico-primary);">
-            <h2>Sean Clendening Capstone - Task Management Prototype</h2>
+    <header th:fragment="site_header" class="site-header container-fluid">
+        <div class="site-identity">
+            <p class="site-title">Sean Clendening Capstone</p>
+            <p class="site-subtitle">Management Services Prototype</p>
         </div>
+        <a th:href="@{/}" class="secondary" type="button">Dashboard</a>
     </header>
 
 </body>

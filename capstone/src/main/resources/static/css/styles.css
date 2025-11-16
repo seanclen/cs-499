@@ -1,0 +1,83 @@
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--pico-table-border-color);
+    padding: var(--pico-block-spacing-vertical);
+    margin-bottom: 1rem;
+}
+
+.site-header a {
+    margin: 0;
+}
+
+.site-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.site-subtitle {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    padding: 16px;
+    background: var(--pico-table-border-color);
+    border-radius: var(--pico-border-radius);
+}
+
+.message {
+    font-weight: bold;
+    background-color: var(--pico-code-background-color);
+    background-position: center left .75rem;
+    background-size: 1rem auto;
+    background-repeat: no-repeat;
+    padding: var(--pico-block-spacing-horizontal);
+    padding-left: calc(var(--pico-form-element-spacing-horizontal) + 1.5rem) !important;
+    border-radius: var(--pico-border-radius);
+}
+.message-success {
+    background-image: var(--pico-icon-valid);
+}
+.message-error {
+    background-image: var(--pico-icon-invalid);
+}
+
+.inline-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+/* Any items */
+
+table .actions {
+    display: flex;
+    gap: 0.5rem;
+}
+table .actions button,
+table .actions a {
+    margin-bottom: 0;
+}
+
+body.dashboard .card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+body.dashboard .card a {
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+
+@media (min-width: 768px) {
+    .inline-title > * {
+        margin: 0;
+    }
+}
