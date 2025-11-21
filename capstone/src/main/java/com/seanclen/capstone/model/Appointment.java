@@ -120,7 +120,7 @@ public class Appointment implements HasId {
 	 * @param date the date to check
 	 * @return true if the date is valid, false otherwise
 	 */
-	private boolean isValidDate(Date date) {
+	public final static boolean isValidDate(Date date) {
 		return date != null && date.after(new Date());
 	}
 
@@ -130,7 +130,7 @@ public class Appointment implements HasId {
 	 * @param description the description to check
 	 * @return true if the description is valid, false otherwise
 	 */
-	private boolean isValidDescription(String description) {
+	public final static boolean isValidDescription(String description) {
 		return description != null && !description.isEmpty() && description.length() <= 50;
 	}
 }
