@@ -8,24 +8,23 @@
         <h1 th:text="${contact.id != null} ? 'Edit Contact: ' + ${contact.id} : 'Create New Contact'"></h1>
 
         <form th:object="${contact}" th:action="*{id} ? @{/contacts/{id}(id=*{id})} : @{/contacts}" method="post">
-        
-        <input th:if="*{id}" type="hidden" name="_method" value="put" /> 
-        
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" th:field="*{firstName}" required th:maxlength="10">
+            <input th:if="*{id}" type="hidden" name="_method" value="put" /> 
+            
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" th:field="*{firstName}" required th:maxlength="10">
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" th:field="*{lastName}" required th:maxlength="10">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" th:field="*{lastName}" required th:maxlength="10">
 
-        <label for="phone">Phone (10 digits):</label>
-        <input type="text" id="phone" th:field="*{phone}" required pattern=".{10,10}" title="Must be exactly 10 digits">
+            <label for="phone">Phone (10 digits):</label>
+            <input type="text" id="phone" th:field="*{phone}" required pattern=".{10,10}" title="Must be exactly 10 digits">
 
-        <label for="address">Address:</label>
-        <input type="text" id="address" th:field="*{address}" required th:maxlength="30">
+            <label for="address">Address:</label>
+            <input type="text" id="address" th:field="*{address}" required th:maxlength="30">
 
-        <button type="submit" th:text="*{id} ? 'Save Changes' : 'Create Contact'"></button>
-        <a class="secondary" th:href="@{/contacts}" type="button">Cancel</a>
-    </form>
+            <button type="submit" th:text="*{id} ? 'Save Changes' : 'Create Contact'"></button>
+            <a class="secondary" th:href="@{/contacts}" type="button">Cancel</a>
+        </form>
     </main>
     <div th:replace="~{fragments/layout_fragments :: site_footer}"></div>
 </body>

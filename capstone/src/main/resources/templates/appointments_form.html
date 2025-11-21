@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout_fragments :: common_head('Appointment Form')}"></head>
+<body>
+    <div th:insert="~{fragments/layout_fragments :: site_header}"></div>
+    <main class="container">
+
+        <h1 th:text="${appointment.id != null} ? 'Edit appointment: ' + ${appointment.id} : 'Create New appointment'"></h1>
+
+        <form th:object="${appointment}" th:action="*{id} ? @{/appointments/{id}(id=*{id})} : @{/appointments}" method="post">
+            <input th:if="*{id}" type="hidden" name="_method" value="put" /> 
+            
+            <label for="date">Date and Time (yyyy-MM-dd'T'HH:mm:ss):</label>
+            <input type="text" id="date" th:field="*{date}" required pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}" title="Pattern: yyyy-MM-dd'T'HH:mm:ss">
+
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" required th:maxlength="50">
+
+            <button type="submit" th:text="*{id} ? 'Save Changes' : 'Create Appointment'"></button>
+            <a class="secondary" th:href="@{/appointments}" type="button">Cancel</a>
+        </form>
+    </main>
+    <div th:replace="~{fragments/layout_fragments :: site_footer}"></div>
+</body>
+</html>
