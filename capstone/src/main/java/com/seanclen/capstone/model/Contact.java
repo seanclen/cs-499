@@ -95,6 +95,18 @@ public class Contact implements HasId {
 	}
 
 	/**
+	 * Set the ID of the contact.
+	 * @param id
+	 * @throws IllegalArgumentException if the ID is invalid
+	 */
+	public void setId(String id) {
+		if (!isValidId(id)) {
+			throw new IllegalArgumentException("Invalid ID");
+		}
+		this.id = id;
+	}
+
+	/**
 	 * Set the first name of the contact.
 	 * @param firstName
 	 * @throws IllegalArgumentException if the first name is invalid
