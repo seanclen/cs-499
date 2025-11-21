@@ -1,0 +1,16 @@
+meta {
+  name: Update Appointment
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{host}}/api/appointments/2?date=2025-12-13T01:12:58&description=Test
+  body: none
+  auth: none
+}
+
+params:query {
+  date: 2025-12-13T01:12:58
+  description: Test
+}

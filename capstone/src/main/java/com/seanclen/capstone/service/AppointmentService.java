@@ -4,7 +4,7 @@ import com.seanclen.capstone.model.Appointment;
 import com.seanclen.capstone.repository.InMemoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -35,40 +35,40 @@ public class AppointmentService {
 
     /**
      * Create a new appointment with the given attributes.
-     * @param date the date of the appointment
+     * @param dateTime the date and time of the appointment
      * @param description the description of the appointment
      * @return the created appointment
      * @throws IllegalArgumentException if any of the attributes are invalid
      */
-    public Appointment createAppointment(Date date, String description) {
+    public Appointment createAppointment(LocalDateTime dateTime, String description) {
         String id = appointmentRepository.getNextId();
-        Appointment appointment = new Appointment(id, date, description);
+        Appointment appointment = new Appointment(id, dateTime, description);
         return appointmentRepository.save(appointment);
     }
 
     /**
      * Update an existing appointment with new attributes.
      * @param id the ID of the appointment to update
-     * @param date the new date of the appointment
+     * @param dateTime the new date and time of the appointment
      * @param description the new description of the appointment
      * @return the updated appointment
      * @throws IllegalArgumentException if the appointment is not found or any of the new attributes are invalid
      */
-    public Appointment updateAppointment(String id, Date date, String description) {
+    public Appointment updateAppointment(String id, LocalDateTime dateTime, String description) {
         Appointment appointment = appointmentRepository.findById(id);
         if (appointment == null) {
             throw new IllegalArgumentException("Appointment not found");
         }
 
         // Validate new attributes before updating.
-        if (!Appointment.isValidDate(date)) {
+        if (!Appointment.isValidDate(dateTime)) {
             throw new IllegalArgumentException("Invalid date");
         }
         if (!Appointment.isValidDescription(description)) {
             throw new IllegalArgumentException("Invalid description");
         }
 
-        appointment.setDate(date);
+        appointment.setDate(dateTime);
         appointment.setDescription(description);
         return appointmentRepository.save(appointment);
     }
