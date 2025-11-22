@@ -1,5 +1,6 @@
 package com.seanclen.capstone.controller;
 
+import com.seanclen.capstone.service.AppointmentService;
 import com.seanclen.capstone.service.ContactService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,14 +13,19 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class DashboardWebController {
+    private final AppointmentService appointmentService;
     private final ContactService contactService;
 
-    public DashboardWebController(ContactService contactService) {
+    public DashboardWebController(AppointmentService appointmentService, ContactService contactService) {
+        this.appointmentService = appointmentService;
         this.contactService = contactService;
     }
 
     @GetMapping("/")
     public String getDashboard(Model model) {
+        int appointmentCount = appointmentService.getAllAppointments().size();
+        model.addAttribute("appointmentCount", appointmentCount);
+        
         int contactCount = contactService.getAllContacts().size();
         model.addAttribute("contactCount", contactCount);
         
