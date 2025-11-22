@@ -1,7 +1,7 @@
 package com.seanclen.capstone.service;
 
 import com.seanclen.capstone.model.Contact;
-import com.seanclen.capstone.repository.InMemoryRepository;
+import com.seanclen.capstone.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.List;
  */
 @Service
 public class ContactService {
-    private final InMemoryRepository<Contact> contactRepository;
+    private final ContactRepository<Contact> contactRepository;
 
-    public ContactService(InMemoryRepository<Contact> contactRepository) {
+    public ContactService(ContactRepository<Contact> contactRepository) {
         this.contactRepository = contactRepository;
     }
 

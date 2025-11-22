@@ -1,7 +1,7 @@
 package com.seanclen.capstone.service;
 
 import com.seanclen.capstone.model.Appointment;
-import com.seanclen.capstone.repository.InMemoryRepository;
+import com.seanclen.capstone.repository.AppointmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,9 +14,9 @@ import java.util.List;
  */
 @Service
 public class AppointmentService {
-    private final InMemoryRepository<Appointment> appointmentRepository;
+    private final AppointmentRepository<Appointment> appointmentRepository;
 
-    public AppointmentService(InMemoryRepository<Appointment> appointmentRepository) {
+    public AppointmentService(AppointmentRepository<Appointment> appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
     }
 

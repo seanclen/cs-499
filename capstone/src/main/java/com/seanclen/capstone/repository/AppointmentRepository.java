@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This repository provides basic CRUD operations and will eventually be replaced by a database-backed repository.
  */
 @Repository
-public class InMemoryRepository<T extends HasId> {
+public class AppointmentRepository<T extends HasId> {
     // Use a HashMap to store items, mapping the ID (String) to the entity (T).
     // This allows for O(1) average complexity for findById, save, and deleteById.
     private final HashMap<String, T> items = new HashMap<>();
