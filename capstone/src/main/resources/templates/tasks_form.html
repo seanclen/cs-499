@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout_fragments :: common_head('Task Form')}"></head>
+<body>
+    <div th:insert="~{fragments/layout_fragments :: site_header}"></div>
+    <main class="container">
+        
+        <h1 th:text="${task.id != null} ? 'Edit Task: ' + ${task.id} : 'Create New Task'"></h1>
+
+        <form th:object="${task}" th:action="*{id} ? @{/tasks/{id}(id=*{id})} : @{/tasks}" method="post">
+            <input th:if="*{id}" type="hidden" name="_method" value="put" /> 
+            
+            <label for="name">Task Name:</label>
+            <input type="text" id="name" th:field="*{name}" required th:maxlength="50">
+
+            <label for="description">Description:</label>
+            <textarea id="description" th:field="*{description}" required th:maxlength="200"></textarea>
+
+            <button type="submit" th:text="*{id} ? 'Save Changes' : 'Create Task'"></button>
+            <a class="secondary" th:href="@{/tasks}" type="button">Cancel</a>
+        </form>
+    </main>
+    <div th:replace="~{fragments/layout_fragments :: site_footer}"></div>
+</body>
+</html>

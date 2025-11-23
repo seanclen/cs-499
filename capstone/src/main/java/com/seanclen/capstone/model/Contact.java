@@ -103,6 +103,7 @@ public class Contact implements HasId {
 		if (!isValidId(id)) {
 			throw new IllegalArgumentException("Invalid ID");
 		}
+		
 		this.id = id;
 	}
 
