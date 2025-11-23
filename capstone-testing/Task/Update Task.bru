@@ -1,0 +1,16 @@
+meta {
+  name: Update Task
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{host}}/api/tasks/1?name=Test Name Update&description=Lorem Ipsum Update
+  body: none
+  auth: none
+}
+
+params:query {
+  name: Test Name Update
+  description: Lorem Ipsum Update
+}

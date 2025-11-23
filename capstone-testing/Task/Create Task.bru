@@ -1,0 +1,16 @@
+meta {
+  name: Create Task
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/tasks?name=Test Name&description=Lorem Ipsum
+  body: none
+  auth: none
+}
+
+params:query {
+  name: Test Name
+  description: Lorem Ipsum
+}
