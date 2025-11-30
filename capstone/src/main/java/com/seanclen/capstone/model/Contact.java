@@ -1,5 +1,8 @@
 package com.seanclen.capstone.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * This class represents a contact in the address book.
  * It has the following attributes:
@@ -10,12 +13,18 @@ package com.seanclen.capstone.model;
  * - address: the address of the contact
  * @author Sean Clendening
  */
-public class Contact implements HasId {
+@Document(collection = "contacts")
+public class Contact {
+	@Id
 	private String id;
 	private String firstName;
 	private String lastName;
 	private String phone;
 	private String address;
+
+	public Contact() {
+		// Default constructor for MongoDB
+	}
 
 	/**
 	 * Create a new contact with the given attributes.
@@ -27,9 +36,6 @@ public class Contact implements HasId {
 	 * @throws IllegalArgumentException if any of the attributes are invalid
 	 */
 	public Contact(String id, String firstName, String lastName, String phone, String address) {
-		if (!isValidId(id)) {
-			throw new IllegalArgumentException("Invalid ID");
-		}
 
 		if (!isValidFirstName(firstName)) {
 			throw new IllegalArgumentException("Invalid first name");
@@ -100,10 +106,6 @@ public class Contact implements HasId {
 	 * @throws IllegalArgumentException if the ID is invalid
 	 */
 	public void setId(String id) {
-		if (!isValidId(id)) {
-			throw new IllegalArgumentException("Invalid ID");
-		}
-		
 		this.id = id;
 	}
 
@@ -157,21 +159,6 @@ public class Contact implements HasId {
 		}
 
 		this.address = address;
-	}
-
-	/**
-	 * Check if the ID is valid.
-	 * The contact object shall have a required unique contact ID String that cannot be longer than 10 characters. The contact ID shall not be null and shall not be updatable.
-	 *
-	 * @param id the ID to check
-	 * @return true if the ID is valid, false otherwise
-	 */
-	public final static boolean isValidId(String id) {
-		if (id == null || id.trim().length() == 0 || id.trim().length() > 10) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**

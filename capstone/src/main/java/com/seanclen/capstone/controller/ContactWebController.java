@@ -1,7 +1,6 @@
 package com.seanclen.capstone.controller;
 
 import com.seanclen.capstone.model.Contact;
-import com.seanclen.capstone.form.ContactForm;
 import com.seanclen.capstone.service.ContactService;
 
 import org.springframework.stereotype.Controller;
@@ -27,37 +26,32 @@ public class ContactWebController {
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
-        model.addAttribute("contact", new ContactForm());
+        model.addAttribute("contact", new Contact());
         return "contacts_form";
     }
 
     @GetMapping("/{id}") // Maps to GET /contacts/{id} for editing
     public String showEditForm(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        Contact contact = contactService.getContactById(id);
-        if (contact == null) {
-            redirectAttributes.addFlashAttribute("error", "Contact not found.");
+        try {
+            Contact contact = contactService.getContactById(id);
+            
+            // Pass the Contact entity directly to the model
+            model.addAttribute("contact", contact); 
+            return "contacts_form";
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "Contact not found: " + e.getMessage());
             return "redirect:/contacts";
         }
-
-        // Map the model Contact to ContactForm
-        ContactForm contactForm = new ContactForm();
-        contactForm.setFirstName(contact.getFirstName());
-        contactForm.setLastName(contact.getLastName());
-        contactForm.setPhone(contact.getPhone());
-        contactForm.setAddress(contact.getAddress());
-
-        // Pass the existing contact object to the form for pre-filling
-        model.addAttribute("contact", contact);
-        return "contacts_form";
     }
     
     @PostMapping 
-    public String createContact(@ModelAttribute ContactForm form, // Use @ModelAttribute to bind form fields
+    public String createContact(@ModelAttribute Contact contact,
                                 RedirectAttributes redirectAttributes) {
         
         try {
             // Call the service with the data from the form object
-            contactService.createContact(form.getFirstName(), form.getLastName(), form.getPhone(), form.getAddress());
+            contactService.createContact(contact.getFirstName(), contact.getLastName(), contact.getPhone(), contact.getAddress());
             redirectAttributes.addFlashAttribute("message", "Contact created successfully!");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Error creating contact: " + e.getMessage());
@@ -65,15 +59,13 @@ public class ContactWebController {
         return "redirect:/contacts"; 
     }
     
-    // --- U (Handle Update PUT) - UPDATED BINDING ---
     @PutMapping("/{id}")
     public String updateContact(@PathVariable String id,
-                                @ModelAttribute ContactForm form, // Use @ModelAttribute
+                                @ModelAttribute Contact contact,
                                 RedirectAttributes redirectAttributes) {
         
         try {
-            // Call the service with the data from the form object
-            contactService.updateContact(id, form.getFirstName(), form.getLastName(), form.getPhone(), form.getAddress());
+            contactService.updateContact(id, contact.getFirstName(), contact.getLastName(), contact.getPhone(), contact.getAddress());
             redirectAttributes.addFlashAttribute("message", "Contact updated successfully!");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Error updating contact: " + e.getMessage());
