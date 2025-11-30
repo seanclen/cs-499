@@ -3,8 +3,10 @@ package com.seanclen.capstone.service;
 import com.seanclen.capstone.model.Contact;
 import com.seanclen.capstone.repository.ContactRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service class for managing contacts.
@@ -13,9 +15,9 @@ import java.util.List;
  */
 @Service
 public class ContactService {
-    private final ContactRepository<Contact> contactRepository;
+    private final ContactRepository contactRepository;
 
-    public ContactService(ContactRepository<Contact> contactRepository) {
+    public ContactService(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
 
@@ -26,10 +28,12 @@ public class ContactService {
     /**
      * Retrieve a contact by its ID.
      * @param id the ID of the contact
-     * @return the contact with the given ID, or null if not found
+     * @return the contact with the given ID
+     * @throws IllegalArgumentException if the contact is not found
      */
     public Contact getContactById(String id) {
-        return contactRepository.findById(id);
+        return contactRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Contact not found with ID: " + id));
     }
 
     /**
@@ -38,12 +42,15 @@ public class ContactService {
      * @param lastName the last name of the contact
      * @param phone the phone number of the contact
      * @param address the address of the contact
-     * @return the created contact
+     * @return the created contact with the MongoDB-assigned ID
      * @throws IllegalArgumentException if any of the attributes are invalid
      */
+    @Transactional
     public Contact createContact(String firstName, String lastName, String phone, String address) {
-        String id = contactRepository.getNextId();
-        Contact contact = new Contact(id, firstName, lastName, phone, address);
+        // Pass 'null' for the ID; MongoDB will auto-generate it.
+        Contact contact = new Contact(null, firstName, lastName, phone, address);
+
+        // The Contact constructor will handle validation before creating the object.
         return contactRepository.save(contact);
     }
 
@@ -57,40 +64,40 @@ public class ContactService {
      * @return the updated contact
      * @throws IllegalArgumentException if the contact is not found or any of the new attributes are invalid
      */
+    @Transactional
     public Contact updateContact(String id, String firstName, String lastName, String phone, String address) {
-        Contact contact = contactRepository.findById(id);
-        if (contact == null) {
-            throw new IllegalArgumentException("Contact not found");
+        // Use Optional to handle missing contact gracefully
+        Optional<Contact> contactOptional = contactRepository.findById(id);
+
+        if (contactOptional.isEmpty()) {
+            throw new IllegalArgumentException("Contact not found with ID: " + id);
         }
 
-        // Validate new attributes before updating. All attributes must be valid.
-        if (!Contact.isValidFirstName(firstName)) {
-            throw new IllegalArgumentException("Invalid first name");
-        }
-        if (!Contact.isValidLastName(lastName)) {
-            throw new IllegalArgumentException("Invalid last name");
-        }
-        if (!Contact.isValidPhone(phone)) {
-            throw new IllegalArgumentException("Invalid phone number");
-        }
-        if (!Contact.isValidAddress(address)) {
-            throw new IllegalArgumentException("Invalid address");
-        }
+        Contact contact = contactOptional.get();
 
+        // The validation logic is already present in the Contact model's setters.
+        // If any of these are invalid, the setters will throw an IllegalArgumentException.
         contact.setFirstName(firstName);;
         contact.setLastName(lastName);
         contact.setPhone(phone);
         contact.setAddress(address);
 
-        return contact;
+        return contactRepository.save(contact);
     }
 
     /**
      * Delete a contact by its ID.
      * @param id the ID of the contact to delete
-     * @return true if the contact was deleted, false otherwise
+     * @return true if the contact existed and was deleted
+     * @throws IllegalArgumentException if the ID is invalid
      */
+    @Transactional
     public boolean deleteContact(String id) {
-        return contactRepository.deleteById(id);
+        if (!contactRepository.existsById(id)) {
+            throw new IllegalArgumentException("Contact not found with ID: " + id);
+        }
+
+        contactRepository.deleteById(id);
+        return true;
     }
 }

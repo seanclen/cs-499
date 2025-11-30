@@ -1,7 +1,6 @@
 package com.seanclen.capstone.controller;
 
 import com.seanclen.capstone.model.Task;
-import com.seanclen.capstone.form.TaskForm;
 import com.seanclen.capstone.service.TaskService;
 
 import org.springframework.stereotype.Controller;
@@ -28,38 +27,32 @@ public class TaskWebController {
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
-        model.addAttribute("task", new TaskForm());
+        model.addAttribute("task", new Task());
 
         return "tasks_form";
     }
 
     @GetMapping("/{id}") // Maps to GET /tasks/{id} for editing
     public String showEditForm(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        Task task = taskService.getTaskById(id);
-        if (task == null) {
-            redirectAttributes.addFlashAttribute("error", "Task not found.");
+        try {
+            Task task = taskService.getTaskById(id);
+            
+            // Pass the Task entity directly to the model
+            model.addAttribute("task", task); 
+            return "tasks_form";
 
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "Task not found: " + e.getMessage());
             return "redirect:/tasks";
         }
-
-        // Map the model Task to TaskForm
-        TaskForm taskForm = new TaskForm();
-        taskForm.setName(task.getName());
-        taskForm.setDescription(task.getDescription());
-
-        // Pass the existing task object to the form for pre-filling
-        model.addAttribute("task", task);
-
-        return "tasks_form";
     }
     
     @PostMapping 
-    public String createTask(@ModelAttribute TaskForm form, // Use @ModelAttribute to bind form fields
+    public String createTask(@ModelAttribute Task task,
                                 RedirectAttributes redirectAttributes) {
         
         try {
-            // Call the service with the data from the form object
-            taskService.createTask(form.getName(), form.getDescription());
+            taskService.createTask(task.getName(), task.getDescription());
             redirectAttributes.addFlashAttribute("message", "Task created successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create task: " + e.getMessage());
@@ -70,10 +63,10 @@ public class TaskWebController {
 
     @PutMapping("/{id}")
     public String updateTask(@PathVariable String id,
-                                @ModelAttribute TaskForm form, // Use @ModelAttribute
+                                @ModelAttribute Task task,
                                 RedirectAttributes redirectAttributes) {
         try {
-            taskService.updateTask(id, form.getName(), form.getDescription());
+            taskService.updateTask(id, task.getName(), task.getDescription());
             redirectAttributes.addFlashAttribute("message", "Task updated successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update task: " + e.getMessage());

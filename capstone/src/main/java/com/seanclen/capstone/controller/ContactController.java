@@ -34,12 +34,12 @@ public class ContactController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Contact> getContactById(@PathVariable String id) {
-        Contact contact = contactService.getContactById(id);
-        if (contact != null) {
+        try {
+            Contact contact = contactService.getContactById(id);
             return new ResponseEntity<>(contact, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
@@ -59,14 +59,10 @@ public class ContactController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable String id) {
         try {
-            boolean deleted = contactService.deleteContact(id);
-            if (deleted) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            contactService.deleteContact(id); 
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.seanclen.capstone.controller;
 
 import com.seanclen.capstone.model.Appointment;
-import com.seanclen.capstone.form.AppointmentForm;
 import com.seanclen.capstone.service.AppointmentService;
 
 import org.springframework.stereotype.Controller;
@@ -29,37 +28,31 @@ public class AppointmentWebController {
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
-        model.addAttribute("appointment", new AppointmentForm());
+        model.addAttribute("appointment", new Appointment());
         return "appointments_form";
     }
 
     @GetMapping("/{id}") // Maps to GET /appointments/{id} for editing
     public String showEditForm(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        Appointment appointment = appointmentService.getAppointmentById(id);
-        if (appointment == null) {
-            redirectAttributes.addFlashAttribute("error", "Appointment not found.");
+        try {
+            Appointment appointment = appointmentService.getAppointmentById(id);
+            
+            // Pass the Appointment entity directly to the model
+            model.addAttribute("appointment", appointment); 
+            return "appointments_form";
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "Appointment not found: " + e.getMessage());
             return "redirect:/appointments";
         }
-        // Map the model Appointment to AppointmentForm
-        AppointmentForm appointmentForm = new AppointmentForm();
-        appointmentForm.setId(appointment.getId());
-        appointmentForm.setDate(appointment.getDate().toString());
-        appointmentForm.setDescription(appointment.getDescription());
-
-        // Pass the existing appointment object to the form for pre-filling
-        model.addAttribute("appointment", appointmentForm);
-        return "appointments_form";
     }
 
     @PostMapping 
-    public String createAppointment(@ModelAttribute AppointmentForm form, // Use @ModelAttribute to bind form fields
+    public String createAppointment(@ModelAttribute Appointment appointment,
                                 RedirectAttributes redirectAttributes) {
-        // Convert the date string to LocalDateTime if necessary
-        LocalDateTime date = LocalDateTime.parse(form.getDate());
-
         try {
-            // Call the service with the data from the form object
-            appointmentService.createAppointment(date, form.getDescription());
+            // Call the service with the data from the appointment object
+            appointmentService.createAppointment(appointment.getDate(), appointment.getDescription());
             redirectAttributes.addFlashAttribute("success", "Appointment created successfully.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Error creating appointment: " + e.getMessage());
@@ -69,13 +62,10 @@ public class AppointmentWebController {
 
     @PutMapping("/{id}") // Maps to POST /appointments/{id} for updating
     public String updateAppointment(@PathVariable String id,
-                                    @ModelAttribute AppointmentForm form,
+                                    @ModelAttribute Appointment appointment,
                                     RedirectAttributes redirectAttributes) {
         try {
-            // Convert the date string to LocalDateTime if necessary
-            LocalDateTime date = LocalDateTime.parse(form.getDate());
-
-            appointmentService.updateAppointment(id, date, form.getDescription());
+            appointmentService.updateAppointment(id, appointment.getDate(), appointment.getDescription());
             redirectAttributes.addFlashAttribute("success", "Appointment updated successfully.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Error updating appointment: " + e.getMessage());

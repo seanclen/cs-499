@@ -11,7 +11,7 @@
             <input th:if="*{id}" type="hidden" name="_method" value="put" /> 
             
             <label for="date">Date and Time (yyyy-MM-dd'T'HH:mm:ss):</label>
-            <input type="text" id="date" th:field="*{date}" required pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}" title="Pattern: yyyy-MM-dd'T'HH:mm:ss">
+            <input type="text" id="date" th:field="*{date}" required>
 
             <label for="description">Description:</label>
             <input type="text" id="description" th:field="*{description}" required th:maxlength="50">

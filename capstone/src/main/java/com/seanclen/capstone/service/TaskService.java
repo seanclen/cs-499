@@ -3,8 +3,10 @@ package com.seanclen.capstone.service;
 import com.seanclen.capstone.model.Task;
 import com.seanclen.capstone.repository.TaskRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service class for managing tasks.
@@ -13,9 +15,9 @@ import java.util.List;
  */
 @Service
 public class TaskService {
-    private final TaskRepository<Task> taskRepository;
+    private final TaskRepository taskRepository;
 
-    public TaskService(TaskRepository<Task> taskRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
@@ -26,22 +28,27 @@ public class TaskService {
     /**
      * Retrieve a task by its ID.
      * @param id the ID of the task
-     * @return the task with the given ID, or null if not found
+     * @return the task with the given ID
+     * @throws IllegalArgumentException if the task is not found
      */
     public Task getTaskById(String id) {
-        return taskRepository.findById(id);
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found with ID: " + id));
     }
 
     /**
      * Create a new task with the given attributes.
      * @param name the name of the task
      * @param description the description of the task
-     * @return the created task
+     * @return the created task with the MongoDB-assigned ID
      * @throws IllegalArgumentException if any of the attributes are invalid
      */
+    @Transactional
     public Task createTask(String name, String description) {
-        String id = taskRepository.getNextId();
-        Task task = new Task(id, name, description);
+        // Pass 'null' for the ID; MongoDB will auto-generate it.
+        Task task = new Task(null, name, description);
+
+        // The Task constructor will handle validation before creating the object.
         return taskRepository.save(task);
     }
 
@@ -53,24 +60,20 @@ public class TaskService {
      * @return the updated task
      * @throws IllegalArgumentException if the task is not found or any of the new attributes are invalid
      */
+    @Transactional
     public Task updateTask(String id, String name, String description) {
-        Task task = taskRepository.findById(id);
-        if (task == null) {
-            throw new IllegalArgumentException("Task not found");
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isEmpty()) {
+            throw new IllegalArgumentException("Task not found with ID: " + id);
         }
 
-        // Validate new attributes
-        if (!Task.isValidName(name)) {
-            throw new IllegalArgumentException("Invalid name");
-        }
-        if (!Task.isValidDescription(description)) {
-            throw new IllegalArgumentException("Invalid description");
-        }
+        Task task = optionalTask.get();
 
+        // The validation is handled in the setters.
         task.setName(name);
         task.setDescription(description);
         
-        return task;
+        return taskRepository.save(task);
     }
 
     /**
@@ -79,6 +82,11 @@ public class TaskService {
      * @throws IllegalArgumentException if the task is not found
      */
     public boolean deleteTask(String id) {
-        return taskRepository.deleteById(id);
+        if (!taskRepository.existsById(id)) {
+            throw new IllegalArgumentException("Task not found with ID: " + id);
+        }
+
+        taskRepository.deleteById(id);
+        return true;
     }
 }
