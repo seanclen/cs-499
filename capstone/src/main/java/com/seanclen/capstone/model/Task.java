@@ -1,5 +1,8 @@
 package com.seanclen.capstone.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * This class represents a task in the task list.
  * It has the following required attributes:
@@ -8,7 +11,9 @@ package com.seanclen.capstone.model;
  * - description: the description of the task
  * @author Sean Clendening
  */
-public class Task implements HasId {
+@Document(collection = "tasks")
+public class Task {
+    @Id
     private String id;
     private String name;
     private String description;
@@ -18,6 +23,10 @@ public class Task implements HasId {
     public final static int MAX_NAME_LENGTH = 20;
     public final static int MAX_DESCRIPTION_LENGTH = 50;
 
+    public Task() {
+        // Default constructor for MongoDB
+    }
+
     /**
      * Create a new task with the given attributes.
      * @param id the ID of the task
@@ -26,9 +35,6 @@ public class Task implements HasId {
      * @throws IllegalArgumentException if any of the attributes are invalid
      */
     public Task(String id, String name, String description) {
-        if (!isValidId(id)) {
-            throw new IllegalArgumentException("Invalid ID");
-        }
 
         if (!isValidName(name)) {
             throw new IllegalArgumentException("Invalid name");
@@ -47,7 +53,6 @@ public class Task implements HasId {
      * Get the ID of the task.
      * @return the ID of the task
      */
-    @Override
     public String getId() {
         return id;
     }
@@ -74,10 +79,6 @@ public class Task implements HasId {
      * @throws IllegalArgumentException if the ID is invalid
      */
     public void setId(String id) {
-        if (!isValidId(id)) {
-            throw new IllegalArgumentException("Invalid ID");
-        }
-
         this.id = id;
     }
 
@@ -105,15 +106,6 @@ public class Task implements HasId {
         }
 
         this.description = description;
-    }
-
-    /**
-     * Validate the ID.
-     * @param id the ID to validate
-     * @return true if the ID is valid, false otherwise
-     */
-    public static boolean isValidId(String id) {
-        return id != null && !id.isEmpty() && id.length() <= MAX_ID_LENGTH;
     }
 
     /**
