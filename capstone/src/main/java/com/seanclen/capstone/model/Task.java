@@ -76,7 +76,6 @@ public class Task {
     /**
      * Set the ID of the task.
      * @param id the new ID of the task
-     * @throws IllegalArgumentException if the ID is invalid
      */
     public void setId(String id) {
         this.id = id;

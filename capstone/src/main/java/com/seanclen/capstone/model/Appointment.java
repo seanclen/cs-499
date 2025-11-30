@@ -1,6 +1,8 @@
 package com.seanclen.capstone.model;
 
 import java.time.LocalDateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * This class represents an appointment in the scheduling system.
@@ -11,7 +13,9 @@ import java.time.LocalDateTime;
  * - description: a brief description of the appointment
  * @author Sean Clendening
  */
-public class Appointment implements HasId {
+@Document(collection = "appointments")
+public class Appointment {
+    @Id
     private String id;
     private LocalDateTime date;
     private String description;
@@ -19,7 +23,11 @@ public class Appointment implements HasId {
     // Public constants for validation
     public final static int MAX_ID_LENGTH = 10;
     public final static int MAX_DESCRIPTION_LENGTH = 50;
-    public final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    public final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm";
+
+    public Appointment() {
+        // Default constructor for MongoDB
+    }
 
     /**
      * Create a new appointment with the given attributes.
@@ -29,10 +37,6 @@ public class Appointment implements HasId {
      * @throws IllegalArgumentException if any of the attributes are invalid
      */
     public Appointment(String id, LocalDateTime date, String description) {
-        if (!isValidId(id)) {
-            throw new IllegalArgumentException("Invalid ID");
-        }
-
         if (!isValidDate(date)) {
             throw new IllegalArgumentException("Invalid date");
         }
@@ -73,13 +77,8 @@ public class Appointment implements HasId {
     /**
      * Set the ID of the appointment.
      * @param id the new ID of the appointment
-     * @throws IllegalArgumentException if the ID is invalid
      */
     public void setId(String id) {
-        if (!isValidId(id)) {
-            throw new IllegalArgumentException("Invalid ID");
-        }
-
         this.id = id;
     }
 
@@ -107,16 +106,6 @@ public class Appointment implements HasId {
         }
 
         this.description = description;
-    }
-
-    /**
-     * Check if the given ID is valid.
-     * The ID must not be null or empty, and cannot be longer than MAX_ID_LENGTH characters.
-     * @param id the ID to check
-     * @return true if the ID is valid, false otherwise
-     */
-    private boolean isValidId(String id) {
-        return id != null && !id.isEmpty() && id.length() <= MAX_ID_LENGTH;
     }
 
     /**

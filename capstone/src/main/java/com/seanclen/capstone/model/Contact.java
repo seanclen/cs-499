@@ -103,7 +103,6 @@ public class Contact {
 	/**
 	 * Set the ID of the contact.
 	 * @param id
-	 * @throws IllegalArgumentException if the ID is invalid
 	 */
 	public void setId(String id) {
 		this.id = id;
