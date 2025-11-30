@@ -8,10 +8,10 @@
         <h1 th:text="${appointment.id != null} ? 'Edit appointment: ' + ${appointment.id} : 'Create New appointment'"></h1>
 
         <form th:object="${appointment}" th:action="*{id} ? @{/appointments/{id}(id=*{id})} : @{/appointments}" method="post">
-            <input th:if="*{id}" type="hidden" name="_method" value="put" /> 
+            <input th:if="*{id}" type="hidden" name="_method" value="put" />
             
-            <label for="date">Date and Time (yyyy-MM-dd'T'HH:mm:ss):</label>
-            <input type="text" id="date" th:field="*{date}" required>
+            <label for="date">Appointment Date and Time:</label>
+            <input type="datetime-local" id="date" name="date" th:value="*{formattedDate}" required />
 
             <label for="description">Description:</label>
             <input type="text" id="description" th:field="*{description}" required th:maxlength="50">

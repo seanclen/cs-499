@@ -1,6 +1,7 @@
 package com.seanclen.capstone.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -67,6 +68,21 @@ public class Appointment {
     }
 
     /**
+     * Get the date of the appointment formatted as a string for use 
+     * in an HTML datetime-local input (yyyy-MM-dd'T'HH:mm).
+     * @return the formatted date string
+     */
+    public String getFormattedDate() {
+        if (this.date == null) {
+            return "";
+        }
+
+        // Use the same format constant for formatting the output
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        return this.date.format(formatter);
+    }
+
+    /**
      * Get the description of the appointment.
      * @return the description of the appointment
      */
@@ -115,7 +131,7 @@ public class Appointment {
      * @return true if the date is valid, false otherwise
      */
     public final static boolean isValidDate(LocalDateTime date) {
-        return date != null && date.isAfter(LocalDateTime.now());
+        return date != null && !date.toLocalDate().isBefore(LocalDateTime.now().toLocalDate());
     }
 
     /**

@@ -27,7 +27,7 @@
             <tbody>
                 <tr th:each="appointment : ${appointments}">
                     <td th:text="${appointment.id}">1</td>
-                    <td th:text="${appointment.date}">2024-01-01T10:00</td>
+                    <td th:text="${appointment.formattedDate}">2024-01-01T10:00</td>
                     <td th:text="${appointment.description}">Doctor's Appointment</td>
                     
                     <td class="actions">

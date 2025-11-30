@@ -38,7 +38,7 @@ public class AppointmentWebController {
             Appointment appointment = appointmentService.getAppointmentById(id);
             
             // Pass the Appointment entity directly to the model
-            model.addAttribute("appointment", appointment); 
+            model.addAttribute("appointment", appointment);
             return "appointments_form";
 
         } catch (IllegalArgumentException e) {
